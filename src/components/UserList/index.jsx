@@ -1,16 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Divider, List, ListItem, ListItemText, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import "./styles.css";
-import models from "../../modelData/models";
+import fetchModel from "../../lib/fetchModelData";
 
 /**
  * UserList hiển thị danh sách tên người dùng ở cột bên trái.
  * Nhấn vào tên sẽ chuyển đến trang chi tiết của người dùng đó.
  */
 function UserList() {
-  const users = models.userListModel();
+  // useState lưu danh sách users, ban đầu là mảng rỗng
+  const [users, setUsers] = useState([]);
+  // useState lưu trạng thái loading
+  const [loading, setLoading] = useState(true);
+
+  // useEffect gọi API khi component được mount lần đầu
+  useEffect(() => {
+    fetchModel("/user/list")
+      .then((data) => {
+        setUsers(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Lỗi tải danh sách user:", err);
+        setLoading(false);
+      });
+  }, []); // [] nghĩa là chỉ chạy 1 lần khi mount
+
+  if (loading) {
+    return <Typography style={{ padding: "16px" }}>Đang tải...</Typography>;
+  }
 
   return (
     <div>

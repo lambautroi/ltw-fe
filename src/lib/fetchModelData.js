@@ -1,12 +1,23 @@
 /**
- * fetchModel - Fetch a model from the web server.
+ * fetchModel - Gửi HTTP GET request đến server và trả về dữ liệu JSON.
  *
- * @param {string} url      The URL to issue the GET request.
- *
+ * @param {string} url  URL cần gọi (ví dụ: "/user/list")
+ * @returns {Promise}   Promise chứa dữ liệu JSON từ server
  */
-function fetchModel(url) {
-  const models = null;
-  return models;
+async function fetchModel(url) {
+  // Gọi tới backend đang chạy ở localhost:3000
+  const fullUrl = "http://localhost:3000" + url;
+
+  const response = await fetch(fullUrl);
+
+  // Kiểm tra server có trả về lỗi không
+  if (!response.ok) {
+    throw new Error("Lỗi khi gọi API: " + response.status + " " + response.statusText);
+  }
+
+  // Chuyển response về JSON và trả về
+  const data = await response.json();
+  return data;
 }
 
 export default fetchModel;

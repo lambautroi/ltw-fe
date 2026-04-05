@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Divider } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
-import models from "../../modelData/models";
+import fetchModel from "../../lib/fetchModelData";
 
 import "./styles.css";
 
@@ -11,8 +11,31 @@ import "./styles.css";
  */
 function UserPhotos() {
   const { userId } = useParams();
-  const photos = models.photoOfUserModel(userId);
-  const user = models.userModel(userId);
+  const [photos, setPhotos] = useState([]);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Gọi đồng thời 2 API: /user/:id và /photosOfUser/:id
+  useEffect(() => {
+    setLoading(true);
+    Promise.all([
+      fetchModel("/user/" + userId),
+      fetchModel("/photosOfUser/" + userId),
+    ])
+      .then(([userData, photosData]) => {
+        setUser(userData);
+        setPhotos(photosData);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Lỗi tải ảnh:", err);
+        setLoading(false);
+      });
+  }, [userId]);
+
+  if (loading) {
+    return <Typography style={{ padding: "16px" }}>Đang tải...</Typography>;
+  }
 
   if (!user) {
     return <Typography>Không tìm thấy người dùng.</Typography>;

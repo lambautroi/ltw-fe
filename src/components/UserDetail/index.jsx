@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Button } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
-import models from "../../modelData/models";
+import fetchModel from "../../lib/fetchModelData";
 
 import "./styles.css";
 
@@ -11,9 +11,27 @@ import "./styles.css";
  */
 function UserDetail() {
   const { userId } = useParams();
-  const user = models.userModel(userId);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Nếu không tìm thấy user, hiển thị thông báo lỗi
+  // Gọi API /user/:id mỗi khi userId thay đổi
+  useEffect(() => {
+    setLoading(true);
+    fetchModel("/user/" + userId)
+      .then((data) => {
+        setUser(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Lỗi tải user detail:", err);
+        setLoading(false);
+      });
+  }, [userId]); // [userId] nghĩa là chạy lại khi userId thay đổi
+
+  if (loading) {
+    return <Typography style={{ padding: "16px" }}>Đang tải...</Typography>;
+  }
+
   if (!user) {
     return <Typography>Không tìm thấy người dùng.</Typography>;
   }
