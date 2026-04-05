@@ -5,8 +5,10 @@
  * @returns {Promise}   Promise chứa dữ liệu JSON từ server
  */
 async function fetchModel(url) {
-  // Gọi tới backend đang chạy ở localhost:3000
-  const fullUrl = "http://localhost:3000" + url;
+  // Đổi thành URL backend CodeSandbox khi deploy lên sandbox
+  // Ví dụ: "https://xxxxxx-3000.csb.app"
+  const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
+  const fullUrl = BASE_URL + url;
 
   const response = await fetch(fullUrl);
 
