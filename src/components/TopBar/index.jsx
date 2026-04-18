@@ -1,40 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography } from "@mui/material";
-import { useLocation, useParams } from "react-router-dom";
-import models from "../../modelData/models";
+import { useLocation } from "react-router-dom";
+import fetchModel from "../../lib/fetchModelData";
 
 import "./styles.css";
 
 /**
  * TopBar hiển thị tên sinh viên bên trái và trạng thái trang bên phải.
- * Dùng useLocation() để đọc đường dẫn hiện tại và xác định đang xem trang nào.
  */
 function TopBarContent() {
   const location = useLocation();
   const pathname = location.pathname;
+  const [context, setContext] = useState("");
 
-  let context = "";
+  useEffect(() => {
+    // Kiểm tra đường dẫn /photos/:userId
+    const photosMatch = pathname.match(/^\/photos\/(.+)$/);
+    // Kiểm tra đường dẫn /users/:userId
+    const usersMatch = pathname.match(/^\/users\/(.+)$/);
 
-  // Kiểm tra đường dẫn /photos/:userId
-  const photosMatch = pathname.match(/^\/photos\/(.+)$/);
-  // Kiểm tra đường dẫn /users/:userId
-  const usersMatch = pathname.match(/^\/users\/(.+)$/);
-
-  if (photosMatch) {
-    const userId = photosMatch[1];
-    const user = models.userModel(userId);
-    if (user) {
-      context = `Ảnh của ${user.first_name} ${user.last_name}`;
+    if (photosMatch) {
+      const userId = photosMatch[1];
+      fetchModel("/user/" + userId)
+        .then((user) => {
+          setContext(`Ảnh của ${user.first_name} ${user.last_name}`);
+        })
+        .catch(() => setContext("Lỗi tải thông tin"));
+    } else if (usersMatch) {
+      const userId = usersMatch[1];
+      fetchModel("/user/" + userId)
+        .then((user) => {
+          setContext(`Chi tiết: ${user.first_name} ${user.last_name}`);
+        })
+        .catch(() => setContext("Lỗi tải thông tin"));
+    } else if (pathname === "/users" || pathname === "/") {
+      setContext("Danh sách người dùng");
+    } else {
+      setContext("");
     }
-  } else if (usersMatch) {
-    const userId = usersMatch[1];
-    const user = models.userModel(userId);
-    if (user) {
-      context = `Chi tiết: ${user.first_name} ${user.last_name}`;
-    }
-  } else if (pathname === "/users") {
-    context = "Danh sách người dùng";
-  }
+  }, [pathname]);
 
   return (
     <AppBar className="topbar-appBar" position="absolute">

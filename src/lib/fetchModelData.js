@@ -6,7 +6,6 @@
  */
 async function fetchModel(url) {
   // Đổi thành URL backend CodeSandbox khi deploy lên sandbox
-  // Ví dụ: "https://xxxxxx-3000.csb.app"
   const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
   const fullUrl = BASE_URL + url;
 
