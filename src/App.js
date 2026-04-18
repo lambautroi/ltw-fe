@@ -1,7 +1,7 @@
 import './App.css';
 
 import React from "react";
-import { Grid, Typography, Paper } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import TopBar from "./components/TopBar";
@@ -35,6 +35,7 @@ const App = (props) => {
                       element = {<UserPhotos />}
                   />
                   <Route path="/users" element={<UserList />} />
+                  <Route path="/" element={<UserList />} />
                 </Routes>
               </Paper>
             </Grid>
