@@ -4,10 +4,6 @@
  * @param {string} url  URL cần gọi (ví dụ: "/user/list")
  * @returns {Promise}   Promise chứa dữ liệu JSON từ server
  */
-async function fetchModel(url) {
-  // Đổi thành URL backend CodeSandbox khi deploy lên sandbox
-  const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
-  const fullUrl = BASE_URL + url;
 
   const response = await fetch(fullUrl);
 
