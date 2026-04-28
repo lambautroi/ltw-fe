@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
+test("hiển thị Please Login và form đăng nhập khi chưa có token", () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByText(/Please Login/i)).toBeInTheDocument();
+  expect(screen.getByText(/Photo Sharing/i)).toBeInTheDocument();
 });
