@@ -7,7 +7,7 @@ const AuthContext = createContext(null);
 
 function persistSession(data) {
   if (!data.token) {
-    throw new Error("Phản hồi không có token.");
+    throw new Error("Phan hoi khong co token.");
   }
   setToken(data.token);
   setStoredUser(data.user || null);
@@ -52,9 +52,7 @@ export function AuthProvider({ children }) {
     async function () {
       try {
         await fetchModel("/admin/logout", { method: "POST" });
-      } catch (_) {
-        /* vẫn xóa phiên cục bộ */
-      }
+      } catch (_) {}
       clearAuth();
       setTokenState(null);
       setUser(null);
@@ -76,7 +74,7 @@ export function AuthProvider({ children }) {
 export function useAuth() {
   const ctx = useContext(AuthContext);
   if (!ctx) {
-    throw new Error("useAuth phải dùng bên trong AuthProvider");
+    throw new Error("useAuth phai dung ben trong AuthProvider");
   }
   return ctx;
 }

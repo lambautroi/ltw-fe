@@ -1,14 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Container,
-  Paper,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Paper, Tab, Tabs, TextField, Typography } from "@mui/material";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
@@ -17,9 +8,6 @@ function TabPanel({ children, value, index }) {
   return <Box sx={{ pt: 2 }}>{children}</Box>;
 }
 
-/**
- * Đăng nhập hoặc đăng ký (POST /admin/login, POST /admin/register).
- */
 function LoginRegister() {
   const { isAuthenticated, login, register } = useAuth();
   const [tab, setTab] = useState(0);
@@ -44,7 +32,7 @@ function LoginRegister() {
     setSubmitting(true);
     login(loginName, password)
       .catch(function (err) {
-        setError(err.message || "Đăng nhập thất bại.");
+        setError(err.message || "Dang nhap that bai.");
       })
       .finally(function () {
         setSubmitting(false);
@@ -55,7 +43,7 @@ function LoginRegister() {
     e.preventDefault();
     setError("");
     if (password !== confirmPassword) {
-      setError("Mật khẩu xác nhận không khớp.");
+      setError("Mat khau xac nhan khong khop.");
       return;
     }
     setSubmitting(true);
@@ -69,7 +57,7 @@ function LoginRegister() {
       description,
     })
       .catch(function (err) {
-        setError(err.message || "Đăng ký thất bại.");
+        setError(err.message || "Dang ky that bai.");
       })
       .finally(function () {
         setSubmitting(false);
@@ -83,29 +71,27 @@ function LoginRegister() {
           Photo Sharing
         </Typography>
         <Tabs value={tab} onChange={(_, v) => setTab(v)} aria-label="login or register">
-          <Tab label="Đăng nhập" />
-          <Tab label="Đăng ký" />
+          <Tab label="Dang nhap" />
+          <Tab label="Dang ky" />
         </Tabs>
 
         <TabPanel value={tab} index={0}>
           <Box component="form" onSubmit={handleLoginSubmit}>
             <TextField
-              label="Tên đăng nhập"
+              label="Ten dang nhap"
               value={loginName}
               onChange={(e) => setLoginName(e.target.value)}
               fullWidth
               margin="normal"
-              autoComplete="username"
               required
             />
             <TextField
-              label="Mật khẩu"
+              label="Mat khau"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               fullWidth
               margin="normal"
-              autoComplete="current-password"
               required
             />
             {error ? (
@@ -114,7 +100,7 @@ function LoginRegister() {
               </Typography>
             ) : null}
             <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }} disabled={submitting}>
-              {submitting ? "Đang xử lý…" : "Đăng nhập"}
+              {submitting ? "Dang xu ly..." : "Dang nhap"}
             </Button>
           </Box>
         </TabPanel>
@@ -122,50 +108,45 @@ function LoginRegister() {
         <TabPanel value={tab} index={1}>
           <Box component="form" onSubmit={handleRegisterSubmit}>
             <TextField
-              label="Tên đăng nhập"
+              label="Ten dang nhap"
               value={loginName}
               onChange={(e) => setLoginName(e.target.value)}
               fullWidth
               margin="normal"
-              autoComplete="username"
               required
             />
             <TextField
-              label="Họ"
+              label="Ho"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               fullWidth
               margin="normal"
-              autoComplete="family-name"
               required
             />
             <TextField
-              label="Tên"
+              label="Ten"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               fullWidth
               margin="normal"
-              autoComplete="given-name"
               required
             />
             <TextField
-              label="Địa chỉ"
+              label="Dia chi"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               fullWidth
               margin="normal"
-              autoComplete="address-level2"
             />
             <TextField
-              label="Nghề nghiệp"
+              label="Nghe nghiep"
               value={occupation}
               onChange={(e) => setOccupation(e.target.value)}
               fullWidth
               margin="normal"
-              autoComplete="organization-title"
             />
             <TextField
-              label="Mô tả"
+              label="Mo ta"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               fullWidth
@@ -174,23 +155,21 @@ function LoginRegister() {
               minRows={2}
             />
             <TextField
-              label="Mật khẩu"
+              label="Mat khau"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               fullWidth
               margin="normal"
-              autoComplete="new-password"
               required
             />
             <TextField
-              label="Xác nhận mật khẩu"
+              label="Xac nhan mat khau"
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               fullWidth
               margin="normal"
-              autoComplete="new-password"
               required
             />
             {error ? (
@@ -199,7 +178,7 @@ function LoginRegister() {
               </Typography>
             ) : null}
             <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }} disabled={submitting}>
-              {submitting ? "Đang xử lý…" : "Đăng ký"}
+              {submitting ? "Dang xu ly..." : "Dang ky"}
             </Button>
           </Box>
         </TabPanel>

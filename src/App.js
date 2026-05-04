@@ -2,12 +2,7 @@ import "./App.css";
 
 import React from "react";
 import { Grid, Paper } from "@mui/material";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import TopBar from "./components/TopBar";
@@ -24,7 +19,6 @@ function RequireAuth({ children }) {
   return children;
 }
 
-/** Chỉ hiển thị sau khi đăng nhập: có danh sách trái + nội dung phải */
 function MainLayout() {
   return (
     <Grid container spacing={2}>

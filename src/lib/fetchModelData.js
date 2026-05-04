@@ -1,37 +1,24 @@
 import { getToken, clearAuth } from "./authStorage";
 
-/**
- * Lấy base URL API (CRA: REACT_APP_API_URL).
- */
+export const PHOTO_LIST_CHANGED = "photoSharing:photosChanged";
+
 function getBaseUrl() {
   let BASE_URL = process.env.REACT_APP_API_URL;
   if (!BASE_URL) {
-    if (window.location.hostname.includes("csb.app")) {
-      BASE_URL = "https://hnzt3m-3000.csb.app";
-    } else {
-      BASE_URL = "http://localhost:3000";
-    }
+    BASE_URL = "http://localhost:3001";
   }
   return BASE_URL.replace(/\/$/, "");
 }
-
-/** Sự kiện khi upload ảnh thành công (listener ở UserPhotos). */
-export const PHOTO_LIST_CHANGED = "photoSharing:photosChanged";
 
 export function getApiBaseUrl() {
   return getBaseUrl();
 }
 
-/** URL tải ảnh qua backend (GET /images/:file trên cùng API base). */
 export function imageUrlForFileName(fileName) {
   if (!fileName) return "";
   return getBaseUrl() + "/images/" + encodeURIComponent(fileName);
 }
 
-/**
- * POST /photos/new — multipart field "photo".
- * @returns {Promise<object>} đối tượng Photo đã tạo
- */
 export async function uploadPhoto(file) {
   const BASE_URL = getBaseUrl();
   const token = getToken();
@@ -49,7 +36,7 @@ export async function uploadPhoto(file) {
     if (!window.location.pathname.startsWith("/login")) {
       window.location.assign("/login");
     }
-    throw new Error("Phiên đăng nhập hết hạn hoặc không hợp lệ.");
+    throw new Error("Phien dang nhap het han.");
   }
   const contentType = response.headers.get("content-type");
   const data =
@@ -58,21 +45,12 @@ export async function uploadPhoto(file) {
     const msg =
       typeof data === "object" && data !== null && data.error
         ? data.error
-        : "Tải ảnh thất bại.";
+        : "Tai anh that bai.";
     throw new Error(msg);
   }
   return data;
 }
 
-/**
- * Gọi API (mặc định GET). Gửi Bearer token trừ khi skipAuth: true.
- *
- * @param {string} url  Đường dẫn tương đối, ví dụ "/user/list"
- * @param {object} [options]
- * @param {string} [options.method]
- * @param {object} [options.body]  Object sẽ được JSON.stringify
- * @param {boolean} [options.skipAuth]  Không gửi token (dùng cho /admin/login, /admin/register)
- */
 async function fetchModel(url, options = {}) {
   const { method = "GET", body, skipAuth = false } = options;
   const BASE_URL = getBaseUrl();
@@ -100,7 +78,7 @@ async function fetchModel(url, options = {}) {
     if (!window.location.pathname.startsWith("/login")) {
       window.location.assign("/login");
     }
-    throw new Error("Phiên đăng nhập hết hạn hoặc không hợp lệ.");
+    throw new Error("Phien dang nhap het han.");
   }
 
   const contentType = response.headers.get("content-type");
@@ -111,7 +89,7 @@ async function fetchModel(url, options = {}) {
     const msg =
       typeof data === "object" && data !== null && data.error
         ? data.error
-        : "Lỗi API: " + response.status + " " + response.statusText;
+        : "Loi API: " + response.status;
     throw new Error(msg);
   }
 
